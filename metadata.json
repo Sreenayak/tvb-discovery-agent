@@ -1,0 +1,6 @@
+{
+  "name": "TVB Discovery Agent",
+  "description": "Autonomous venture scouting agent for The Venture Build (TVB) identifying tech platforms with $1M-$5M funding, minimal US presence, and verified executive contacts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
