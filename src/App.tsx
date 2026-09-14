@@ -91,22 +91,30 @@ export default function App() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
+      const fetchJson = async (url: string) => {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`${url} returned HTTP ${response.status}`);
+        }
+        return response.json();
+      };
+
       const [compRes, statsRes, logsRes] = await Promise.all([
-        fetch('/api/companies'),
-        fetch('/api/stats'),
-        fetch('/api/logs')
+        fetchJson('/api/companies'),
+        fetchJson('/api/stats'),
+        fetchJson('/api/logs')
       ]);
 
-      const compData = await compRes.json();
-      const statsData = await statsRes.json();
-      const logsData = await logsRes.json();
+      const compData = compRes;
+      const statsData = statsRes;
+      const logsData = logsRes;
 
       if (compData.success) setCompanies(compData.companies);
       if (statsData.success) setStats(statsData.stats);
       if (logsData.success) setLogs(logsData.logs);
     } catch (err: any) {
       console.error('Failed to load companies:', err);
-      showNotification('Failed to fetch companies from backend service.', 'error');
+      showNotification(err.message || 'Failed to fetch companies from backend service.', 'error');
     } finally {
       setLoading(false);
     }
